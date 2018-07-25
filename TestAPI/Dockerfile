@@ -4,10 +4,10 @@ EXPOSE 80
 
 FROM microsoft/aspnetcore-build:2.0 AS build
 WORKDIR /src
-COPY TestAPI/TestAPI.csproj TestAPI/
-RUN dotnet restore TestAPI/TestAPI.csproj
+COPY ./TestAPI/TestAPI.csproj .
+RUN dotnet restore 
 COPY . .
-WORKDIR /src/TestAPI
+WORKDIR /src
 RUN dotnet build TestAPI.csproj -c Release -o /app
 
 FROM build AS publish
