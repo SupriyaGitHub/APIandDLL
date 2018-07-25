@@ -16,7 +16,8 @@ phases:
       - mkdir efs
       - sudo mount -t nfs4 -o nfsvers=4.1,rsize=1048576,wsize=1048576,hard,timeo=600,retrans=2,noresvport fs-1297cf5a.efs.us-east-1.amazonaws.com:/ efs
       - sudo pwd
-      - cp bin/Debug/netcoreapp2.0/*.dll efs/
+      - cp CommonModels/bin/Debug/netcoreapp2.0/*.dll efs/
+      - cp CommonLibrary/bin/Debug/netcoreapp2.0/*.dll efs/
       - echo "Listing contents of the EFS directory:"
       - ls -l efs/
       - echo "Umounting NFS share..."
