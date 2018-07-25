@@ -3,9 +3,9 @@ version: 0.2
 phases:
   build:
     commands:
-      - msbuild CommonLibrary/CommonLibrary.csproj
+      - cp CommonLibrary/CommonLibrary.csproj .
       - dotnet restore
-      - dotnet build
+      - dotnet build CommonLibrary/CommonLibrary.csproj
       - sudo pwd
   post_build:
     commands:
