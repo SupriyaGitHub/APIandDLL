@@ -3,6 +3,7 @@ version: 0.2
 phases:
   build:
     commands:
+      - msbuild CommonLibrary/CommonLibrary.csproj
       - dotnet restore
       - dotnet build
       - sudo pwd
