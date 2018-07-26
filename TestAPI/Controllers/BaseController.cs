@@ -48,6 +48,9 @@ namespace TestAPI.Controllers
 
                 lstMessages.Add("\nLoaded assemblies from current domain");
                 string AssemblyPath = "/efs/CommonLibrary.dll";// configuration["AssemblyPath"];
+
+
+
                 lstMessages.Add("\nconfiguration[\"AssemblyPath\"] : " + AssemblyPath);
                 var assemblyName = AssemblyName.GetAssemblyName(AssemblyPath);
 
@@ -56,6 +59,7 @@ namespace TestAPI.Controllers
                 if(assembly == null)
                 {
                     lstMessages.Add("\nloading assemply" + AssemblyPath);
+                    assembly = Assembly.Load(System.IO.File.ReadAllBytes("/efs/CommonModels.dll"));
                     assembly = Assembly.Load(System.IO.File.ReadAllBytes(AssemblyPath));
                     lstMessages.Add("\nloaded assemply" + AssemblyPath);
                 }
