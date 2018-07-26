@@ -163,10 +163,26 @@ namespace TestAPI.Controllers
                 var samplemessagev1 = resolver.Assembly.GetType("CommonLibrary.CommonTestClass");
                 dynamic obj = Activator.CreateInstance(samplemessagev1);
 
+                if (obj == null)
+                {
+                    lstMessages.Add("  #####********Activator.CreateInstance********* null instance");
+                }
+
+                lstMessages.Add(" %%%%%  " + obj.CommonTestMethod());
+
+
+                icommonTest = obj as ICommonTest;
+
                 if (icommonTest == null)
                 {
-                    lstMessages.Add("  #####***************** null instance");
+                    lstMessages.Add("  #####*****icommonTest************ null instance");
                 }
+
+                lstMessages.Add(" %%icommonTest%%%  " + icommonTest.CommonTestMethod());
+
+
+
+
 
 
                 //FcdsAssemblyResolver fcdsAssemblyResolver = new FcdsAssemblyResolver("/efs/", "");
@@ -174,7 +190,7 @@ namespace TestAPI.Controllers
                 //dynamic obj = Activator.CreateInstance(samplemessagev1);
                 //icommonTest = obj as ICommonTest;
 
-                
+
                 // //////////////////////////////////////////
 
                 //lstMessages.Add("\nconfiguration[\"AssemblyPath\"] : " + AssemblyPath);
@@ -183,7 +199,7 @@ namespace TestAPI.Controllers
                 //lstMessages.Add("\nassemblyName: " + assemblyName);
                 ////var assembly = listAssemblies.FirstOrDefault(e => e.FullName == assemblyName.FullName);
                 ////if(assembly == null)
-               
+
                 //    lstMessages.Add("\nloading assemply" + AssemblyPath);
                 //   var assembly = Assembly.Load(System.IO.File.ReadAllBytes("/efs/CommonModels.dll"));
                 //    assembly = Assembly.Load(System.IO.File.ReadAllBytes(AssemblyPath));
@@ -205,7 +221,7 @@ namespace TestAPI.Controllers
 
 
                 //var types = assembly.GetType("CommonLibrary.CommonTestClass");// ("SampleLibrary.TestClass");
-               // icommonTest = Activator.CreateInstance(types, null) as ICommonTest;
+                // icommonTest = Activator.CreateInstance(types, null) as ICommonTest;
                 //foreach (var type in types)
                 //{
                 //    lstMessages.Add("\n type :" + type.FullName);
