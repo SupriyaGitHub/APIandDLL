@@ -12,6 +12,96 @@ using TestAPI.Utils;
 
 namespace TestAPI.Controllers
 {
+    internal sealed class AssemblyResolver : IDisposable
+    {
+        private readonly ICompilationAssemblyResolver assemblyResolver;
+        private readonly DependencyContext dependencyContext;
+        private readonly AssemblyLoadContext loadContext;
+
+        public AssemblyResolver(string path)
+        {
+            this.Assembly = AssemblyLoadContext.Default.LoadFromAssemblyPath(path);
+
+            this.dependencyContext = DependencyContext.Load(this.Assembly);
+
+            this.assemblyResolver = new CompositeCompilationAssemblyResolver
+                                    (new ICompilationAssemblyResolver[]
+            {
+            new AppBaseCompilationAssemblyResolver(Path.GetDirectoryName(path)),
+            new ReferenceAssemblyPathResolver(),
+            new PackageCompilationAssemblyResolver()
+            });
+
+            this.loadContext = AssemblyLoadContext.GetLoadContext(this.Assembly);
+            this.loadContext.Resolving += OnResolving;
+        }
+
+        public Assembly Assembly { get; }
+
+        public void Dispose()
+        {
+            this.loadContext.Resolving -= this.OnResolving;
+        }
+
+        private Assembly OnResolving(AssemblyLoadContext context, AssemblyName name)
+        {
+            bool NamesMatch(RuntimeLibrary runtime)
+            {
+                return string.Equals(runtime.Name, name.Name, StringComparison.OrdinalIgnoreCase);
+            }
+
+            RuntimeLibrary library =
+                this.dependencyContext.RuntimeLibraries.FirstOrDefault(NamesMatch);
+            if (library != null)
+            {
+                var wrapper = new CompilationLibrary(
+                    library.Type,
+                    library.Name,
+                    library.Version,
+                    library.Hash,
+                    library.RuntimeAssemblyGroups.SelectMany(g => g.AssetPaths),
+                    library.Dependencies,
+                    library.Serviceable);
+
+                var assemblies = new List<string>();
+                this.assemblyResolver.TryResolveAssemblyPaths(wrapper, assemblies);
+                if (assemblies.Count > 0)
+                {
+                    return this.loadContext.LoadFromAssemblyPath(assemblies[0]);
+                }
+            }
+
+            return null;
+        }
+    }
+    public class FcdsAssemblyInfo
+    {
+        public List<string> AssembliesList = new List<string>
+        {
+            "CommonModels.dll",
+            "CommonLibrary.dll"
+        };
+    }
+    public class FcdsAssemblyResolver
+    {
+        public FcdsAssemblyResolver(string path, string version, FcdsAssemblyInfo fcdsAssemblyInfo = null)
+        {
+            if (!string.IsNullOrEmpty(path)) Path = path;
+            if (!string.IsNullOrEmpty(Version)) Version = version;
+            if (fcdsAssemblyInfo == null) fcdsAssemblyInfo = new FcdsAssemblyInfo();
+
+
+            foreach (var dllname in fcdsAssemblyInfo.AssembliesList)
+            {
+                AssemblyResolvers.Add(dllname.Remove(dllname.Length - 4), new AssemblyResolver(System.IO.Path.Combine(Path, "", dllname)));
+            }
+        }
+
+        private string Path { get; set; } = @"/efs/";
+        private string Version { get; set; } = @"";
+        internal Dictionary<string, AssemblyResolver> AssemblyResolvers { get; set; } = new Dictionary<string, AssemblyResolver>();
+    }
+
     [Produces("application/json")]
     [Route("api/Base")]
     public class BaseController : Controller
@@ -48,29 +138,36 @@ namespace TestAPI.Controllers
 
                 lstMessages.Add("\nLoaded assemblies from current domain");
                 string AssemblyPath = "/efs/CommonLibrary.dll";// configuration["AssemblyPath"];
+                FcdsAssemblyResolver fcdsAssemblyResolver = new FcdsAssemblyResolver("/efs/", "");
+                var samplemessagev1 = fcdsAssemblyResolver.AssemblyResolvers["CommonLibrary"].Assembly.GetType("CommonLibrary.CommonTestClass");
+                dynamic obj = Activator.CreateInstance(samplemessagev1);
+                icommonTest = obj as ICommonTest;
 
-
-
-                lstMessages.Add("\nconfiguration[\"AssemblyPath\"] : " + AssemblyPath);
-                var assemblyName = AssemblyName.GetAssemblyName(AssemblyPath);
-
-                lstMessages.Add("\nassemblyName: " + assemblyName);
-                //var assembly = listAssemblies.FirstOrDefault(e => e.FullName == assemblyName.FullName);
-                //if(assembly == null)
-               
-                    lstMessages.Add("\nloading assemply" + AssemblyPath);
-                   var assembly = Assembly.Load(System.IO.File.ReadAllBytes("/efs/CommonModels.dll"));
-                    assembly = Assembly.Load(System.IO.File.ReadAllBytes(AssemblyPath));
-                    lstMessages.Add("\nloaded assemply" + AssemblyPath);
-
-
-                var ins = assembly.CreateInstance("CommonLibrary.CommonTestClass");
-                icommonTest = ins as ICommonTest;
-
-                if(ins == null)
+                if (icommonTest == null)
                 {
-                    lstMessages.Add("null instance");
+                    lstMessages.Add("  ******************** null instance");
                 }
+
+                //lstMessages.Add("\nconfiguration[\"AssemblyPath\"] : " + AssemblyPath);
+                //var assemblyName = AssemblyName.GetAssemblyName(AssemblyPath);
+
+                //lstMessages.Add("\nassemblyName: " + assemblyName);
+                ////var assembly = listAssemblies.FirstOrDefault(e => e.FullName == assemblyName.FullName);
+                ////if(assembly == null)
+               
+                //    lstMessages.Add("\nloading assemply" + AssemblyPath);
+                //   var assembly = Assembly.Load(System.IO.File.ReadAllBytes("/efs/CommonModels.dll"));
+                //    assembly = Assembly.Load(System.IO.File.ReadAllBytes(AssemblyPath));
+                //    lstMessages.Add("\nloaded assemply" + AssemblyPath);
+
+
+                //var ins = assembly.CreateInstance("CommonLibrary.CommonTestClass");
+                //icommonTest = ins as ICommonTest;
+
+                //if(ins == null)
+                //{
+                //    lstMessages.Add("null instance");
+                //}
 
                 //var types = assembly.GetType("CommonLibrary.CommonTestClass");// ("SampleLibrary.TestClass");
                // icommonTest = Activator.CreateInstance(types, null) as ICommonTest;
