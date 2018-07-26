@@ -7,6 +7,10 @@ namespace CommonLibrary
 {
     public class CommonTestClass : ICommonTest
     {
+        public CommonTestClass()
+        {
+
+        }
 
         public string CommonTestMethod()
         {
