@@ -71,6 +71,7 @@ namespace TestAPI.Controllers
                 this.assemblyResolver.TryResolveAssemblyPaths(wrapper, assemblies);
                 if (assemblies.Count > 0)
                 {
+
                     return this.loadContext.LoadFromAssemblyPath(assemblies[0]);
                 }
             }
@@ -142,15 +143,39 @@ namespace TestAPI.Controllers
 
                 lstMessages.Add("\nLoaded assemblies from current domain");
                 string AssemblyPath = "/efs/CommonLibrary.dll";// configuration["AssemblyPath"];
-                FcdsAssemblyResolver fcdsAssemblyResolver = new FcdsAssemblyResolver("/efs/", "");
-                var samplemessagev1 = fcdsAssemblyResolver.AssemblyResolvers["CommonLibrary"].Assembly.GetType("CommonLibrary.CommonTestClass");
+
+
+
+                AssemblyResolver resolver = new AssemblyResolver("/efs/CommonLibrary.dll");
+
+                foreach (TypeInfo type in resolver.Assembly.DefinedTypes)
+                {
+                    lstMessages.Add(type.Name);
+                }
+
+                    resolver = new AssemblyResolver(AssemblyPath);
+
+                foreach (TypeInfo type in resolver.Assembly.DefinedTypes)
+                {
+                    lstMessages.Add(type.Name);
+                }
+
+                var samplemessagev1 = resolver.Assembly.GetType("CommonLibrary.CommonTestClass");
                 dynamic obj = Activator.CreateInstance(samplemessagev1);
-                icommonTest = obj as ICommonTest;
 
                 if (icommonTest == null)
                 {
-                    lstMessages.Add("  ******************** null instance");
+                    lstMessages.Add("  #####***************** null instance");
                 }
+
+
+                //FcdsAssemblyResolver fcdsAssemblyResolver = new FcdsAssemblyResolver("/efs/", "");
+                //var samplemessagev1 = fcdsAssemblyResolver.AssemblyResolvers["CommonLibrary"].Assembly.GetType("CommonLibrary.CommonTestClass");
+                //dynamic obj = Activator.CreateInstance(samplemessagev1);
+                //icommonTest = obj as ICommonTest;
+
+                
+                // //////////////////////////////////////////
 
                 //lstMessages.Add("\nconfiguration[\"AssemblyPath\"] : " + AssemblyPath);
                 //var assemblyName = AssemblyName.GetAssemblyName(AssemblyPath);
@@ -172,6 +197,12 @@ namespace TestAPI.Controllers
                 //{
                 //    lstMessages.Add("null instance");
                 //}
+
+
+                //////////////////////////////////////////////////////
+
+
+
 
                 //var types = assembly.GetType("CommonLibrary.CommonTestClass");// ("SampleLibrary.TestClass");
                // icommonTest = Activator.CreateInstance(types, null) as ICommonTest;
