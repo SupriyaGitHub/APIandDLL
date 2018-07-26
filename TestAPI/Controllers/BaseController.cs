@@ -47,7 +47,7 @@ namespace TestAPI.Controllers
 
 
                 lstMessages.Add("\nLoaded assemblies from current domain");
-                string AssemblyPath = "/root/efs/CommonLibrary.dll";// configuration["AssemblyPath"];
+                string AssemblyPath = "/efs/CommonLibrary.dll";// configuration["AssemblyPath"];
                 lstMessages.Add("\nconfiguration[\"AssemblyPath\"] : " + AssemblyPath);
                 var assemblyName = AssemblyName.GetAssemblyName(AssemblyPath);
 
