@@ -141,12 +141,12 @@ namespace TestAPI.Controllers
 
 
 
-                lstMessages.Add("\nLoaded assemblies from current domain");
+                lstMessages.Add("\nLoaded assemblies from current domain  ---------------------------------------------------------");
                 string AssemblyPath = "/efs/CommonLibrary.dll";// configuration["AssemblyPath"];
 
 
 
-                AssemblyResolver resolver = new AssemblyResolver("/efs/CommonLibrary.dll");
+                AssemblyResolver resolver = new AssemblyResolver("/efs/CommonModels.dll");
 
                 foreach (TypeInfo type in resolver.Assembly.DefinedTypes)
                 {
