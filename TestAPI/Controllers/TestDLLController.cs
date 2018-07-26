@@ -22,8 +22,18 @@ namespace TestAPI.Controllers
         [HttpGet]
         public List<string> Get()
         {
-            string methodOutput = icommonTest.CommonTestMethod();
-            lstMessages.Add("method output :" + methodOutput);
+            try
+            {
+                string methodOutput = icommonTest.CommonTestMethod();
+                lstMessages.Add("method output :" + methodOutput);
+
+            }
+            catch (Exception ex)
+            {
+
+                lstMessages.Add(ex.Message);
+
+            }
             return lstMessages;
 
         }
