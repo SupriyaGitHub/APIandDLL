@@ -55,14 +55,14 @@ namespace TestAPI.Controllers
                 var assemblyName = AssemblyName.GetAssemblyName(AssemblyPath);
 
                 lstMessages.Add("\nassemblyName: " + assemblyName);
-                var assembly = listAssemblies.FirstOrDefault(e => e.FullName == assemblyName.FullName);
-                if(assembly == null)
-                {
+                //var assembly = listAssemblies.FirstOrDefault(e => e.FullName == assemblyName.FullName);
+                //if(assembly == null)
+               
                     lstMessages.Add("\nloading assemply" + AssemblyPath);
-                    assembly = Assembly.Load(System.IO.File.ReadAllBytes("/efs/CommonModels.dll"));
+                   var assembly = Assembly.Load(System.IO.File.ReadAllBytes("/efs/CommonModels.dll"));
                     assembly = Assembly.Load(System.IO.File.ReadAllBytes(AssemblyPath));
                     lstMessages.Add("\nloaded assemply" + AssemblyPath);
-                }
+                
 
                 var types = assembly.GetTypes();// ("SampleLibrary.TestClass");
                 
