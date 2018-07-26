@@ -62,10 +62,18 @@ namespace TestAPI.Controllers
                    var assembly = Assembly.Load(System.IO.File.ReadAllBytes("/efs/CommonModels.dll"));
                     assembly = Assembly.Load(System.IO.File.ReadAllBytes(AssemblyPath));
                     lstMessages.Add("\nloaded assemply" + AssemblyPath);
-                
 
-                var types = assembly.GetType("CommonLibrary.CommonTestClass");// ("SampleLibrary.TestClass");
-                icommonTest = Activator.CreateInstance(types, null) as ICommonTest;
+
+                var ins = assembly.CreateInstance("CommonLibrary.CommonTestClass");
+                icommonTest = ins as ICommonTest;
+
+                if(ins == null)
+                {
+                    lstMessages.Add("null instance");
+                }
+
+                //var types = assembly.GetType("CommonLibrary.CommonTestClass");// ("SampleLibrary.TestClass");
+               // icommonTest = Activator.CreateInstance(types, null) as ICommonTest;
                 //foreach (var type in types)
                 //{
                 //    lstMessages.Add("\n type :" + type.FullName);
