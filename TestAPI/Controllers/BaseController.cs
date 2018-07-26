@@ -64,18 +64,18 @@ namespace TestAPI.Controllers
                     lstMessages.Add("\nloaded assemply" + AssemblyPath);
                 
 
-                var types = assembly.GetTypes();// ("SampleLibrary.TestClass");
-                
-                foreach (var type in types)
-                {
-                    lstMessages.Add("\n type :" + type.FullName);
-                    if (type != null && type.IsClass && typeof(ICommonTest).IsAssignableFrom(type))
-                    {
-                        icommonTest = Activator.CreateInstance(type, null) as ICommonTest;
-                        lstMessages.Add("\ncreated instance");
-                        break;
-                    }
-                }
+                var types = assembly.GetType("CommonLibrary.CommonTestClass");// ("SampleLibrary.TestClass");
+                icommonTest = Activator.CreateInstance(types, null) as ICommonTest;
+                //foreach (var type in types)
+                //{
+                //    lstMessages.Add("\n type :" + type.FullName);
+                //    if (type != null && type.IsClass && typeof(ICommonTest).IsAssignableFrom(type))
+                //    {
+                //        icommonTest = Activator.CreateInstance(type, null) as ICommonTest;
+                //        lstMessages.Add("\ncreated instance");
+                //        break;
+                //    }
+                //}
             }
             catch (Exception ex)
             {
