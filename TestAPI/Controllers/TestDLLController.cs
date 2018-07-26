@@ -16,14 +16,15 @@ namespace TestAPI.Controllers
     {
         public TestDLLController(IConfiguration configuration) : base(configuration)
         {
-
+            lstMessages.Add("Constructor TestDLLController");
         }
 
         [HttpGet]
-        public string Get()
+        public List<string> Get()
         {
-
-            return icommonTest.CommonTestMethod();
+            string methodOutput = icommonTest.CommonTestMethod();
+            lstMessages.Add("method output :" + methodOutput);
+            return lstMessages;
 
         }
 

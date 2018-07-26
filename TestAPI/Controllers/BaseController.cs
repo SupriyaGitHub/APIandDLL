@@ -17,49 +17,55 @@ namespace TestAPI.Controllers
     public class BaseController : Controller
     {
 
+        public static List<string> lstMessages = new List<string>();
+
+
         public readonly IConfiguration configuration;
 
         public BaseController(IConfiguration configuration)
         {
+            lstMessages.Add("Constructor BaseController");
             this.configuration = configuration;
             LoadLibrary();
         }
         public ICommonTest icommonTest;
         public void LoadLibrary()
-        {
-            var path = @"G:\Lib\";         
+        {         
             try
             {
                 var listAssemblies = AppDomain.CurrentDomain.GetAssemblies();
 
-
-
+                lstMessages.Add("Loaded assemblies from current domain");
                 string AssemblyPath = configuration["AssemblyPath"];
-
-
+                lstMessages.Add("configuration[\"AssemblyPath\"] : " + AssemblyPath);
                 var assemblyName = AssemblyName.GetAssemblyName(AssemblyPath);
-                 var assembly = listAssemblies.FirstOrDefault(e => e.FullName == assemblyName.FullName);
+
+                lstMessages.Add("assemblyName: " + assemblyName);
+                var assembly = listAssemblies.FirstOrDefault(e => e.FullName == assemblyName.FullName);
                 if(assembly == null)
                 {
-                    Console.WriteLine("loading assemply" + AssemblyPath);
-                     assembly = Assembly.Load(System.IO.File.ReadAllBytes(AssemblyPath));
-
+                    lstMessages.Add("loading assemply" + AssemblyPath);
+                    assembly = Assembly.Load(System.IO.File.ReadAllBytes(AssemblyPath));
+                    lstMessages.Add("loaded assemply" + AssemblyPath);
                 }
 
                 var types = assembly.GetTypes();// ("SampleLibrary.TestClass");
                 
                 foreach (var type in types)
                 {
+                    lstMessages.Add(" type :" + type.FullName);
                     if (type != null && type.IsClass && typeof(ICommonTest).IsAssignableFrom(type))
                     {
                         icommonTest = Activator.CreateInstance(type, null) as ICommonTest;
+                        lstMessages.Add("created instance");
                         break;
                     }
                 }
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
+                lstMessages.Add(ex.Message);
+               
             }
             finally
             {
