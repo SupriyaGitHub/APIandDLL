@@ -16,16 +16,17 @@ namespace TestAPI.Controllers
     {
         public TestDLLController(IConfiguration configuration) : base(configuration)
         {
-            lstMessages.Add("Constructor TestDLLController");
+            lstMessages.Add("\n Constructor TestDLLController \n");
         }
 
         [HttpGet]
         public List<string> Get()
         {
+            List<string> messages = new List<string>();
             try
             {
                 string methodOutput = icommonTest.CommonTestMethod();
-                lstMessages.Add("method output :" + methodOutput);
+                lstMessages.Add("\n\n method output :" + methodOutput);
 
             }
             catch (Exception ex)
@@ -34,7 +35,13 @@ namespace TestAPI.Controllers
                 lstMessages.Add(ex.Message);
 
             }
-            return lstMessages;
+
+            foreach (var item in lstMessages)
+            {
+                messages.Add(item);
+            }
+            lstMessages.Clear();
+            return messages;
 
         }
 

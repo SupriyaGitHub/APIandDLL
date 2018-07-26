@@ -24,7 +24,7 @@ namespace TestAPI.Controllers
 
         public BaseController(IConfiguration configuration)
         {
-            lstMessages.Add("Constructor BaseController");
+            lstMessages.Add("\nConstructor BaseController");
             this.configuration = configuration;
             LoadLibrary();
         }
@@ -33,31 +33,42 @@ namespace TestAPI.Controllers
         {         
             try
             {
+
+                lstMessages.Add("\nBase Directory" + AppDomain.CurrentDomain.BaseDirectory);
+
+                var rootDir = System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().CodeBase);
+
+                lstMessages.Add("\n rootDir " + rootDir);
+
                 var listAssemblies = AppDomain.CurrentDomain.GetAssemblies();
 
-                lstMessages.Add("Loaded assemblies from current domain");
+                lstMessages.Add("\n listAssemblies count" + listAssemblies.Count());
+
+
+
+                lstMessages.Add("\nLoaded assemblies from current domain");
                 string AssemblyPath = "/root/efs/CommonLibrary.dll";// configuration["AssemblyPath"];
-                lstMessages.Add("configuration[\"AssemblyPath\"] : " + AssemblyPath);
+                lstMessages.Add("\nconfiguration[\"AssemblyPath\"] : " + AssemblyPath);
                 var assemblyName = AssemblyName.GetAssemblyName(AssemblyPath);
 
-                lstMessages.Add("assemblyName: " + assemblyName);
+                lstMessages.Add("\nassemblyName: " + assemblyName);
                 var assembly = listAssemblies.FirstOrDefault(e => e.FullName == assemblyName.FullName);
                 if(assembly == null)
                 {
-                    lstMessages.Add("loading assemply" + AssemblyPath);
+                    lstMessages.Add("\nloading assemply" + AssemblyPath);
                     assembly = Assembly.Load(System.IO.File.ReadAllBytes(AssemblyPath));
-                    lstMessages.Add("loaded assemply" + AssemblyPath);
+                    lstMessages.Add("\nloaded assemply" + AssemblyPath);
                 }
 
                 var types = assembly.GetTypes();// ("SampleLibrary.TestClass");
                 
                 foreach (var type in types)
                 {
-                    lstMessages.Add(" type :" + type.FullName);
+                    lstMessages.Add("\n type :" + type.FullName);
                     if (type != null && type.IsClass && typeof(ICommonTest).IsAssignableFrom(type))
                     {
                         icommonTest = Activator.CreateInstance(type, null) as ICommonTest;
-                        lstMessages.Add("created instance");
+                        lstMessages.Add("\ncreated instance");
                         break;
                     }
                 }
