@@ -148,14 +148,14 @@ namespace TestAPI.Controllers
 
 
 
-                //AssemblyResolver resolver = new AssemblyResolver("/efs/CommonModels.dll");
+                AssemblyResolver resolver = new AssemblyResolver("/efs/CommonModels.dll");
 
-                //foreach (TypeInfo type in resolver.Assembly.DefinedTypes)
-                //{
-                //    lstMessages.Add(type.Name);
-                //}
+                foreach (TypeInfo type in resolver.Assembly.DefinedTypes)
+                {
+                    lstMessages.Add(type.Name);
+                }
 
-                 var   resolver = new AssemblyResolver(AssemblyPath);
+                resolver = new AssemblyResolver(AssemblyPath);
 
                 foreach (TypeInfo type in resolver.Assembly.DefinedTypes)
                 {
