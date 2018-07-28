@@ -124,6 +124,8 @@ namespace TestAPI.Controllers
             LoadLibrary();
         }
         public ICommonTest icommonTest;
+
+        public ICommonTest icommonTest2;
         public void LoadLibrary()
         {         
             try
@@ -175,8 +177,11 @@ namespace TestAPI.Controllers
                     lstMessages.Add("\n type :" + type.FullName);
                     if (type != null && type.IsClass && type.FullName == "CommonLibrary.CommonTestClass")
                     {
-                        icommonTest = Activator.CreateInstance(type, null) as ICommonTest;
+                        var p = type.GetType();
+                        icommonTest = Activator.CreateInstance(type) as ICommonTest;
                         lstMessages.Add("\ncreated instance");
+
+                        icommonTest2 = resolver.Assembly.CreateInstance(type.FullName) as ICommonTest;
                         break;
                     }
                 }
@@ -186,8 +191,21 @@ namespace TestAPI.Controllers
                 {
                     lstMessages.Add("  #####*****icommonTest************ null instance");
                 }
+                else
+                {
+                    lstMessages.Add(" %%icommonTest%%%  " + icommonTest.CommonTestMethod());
+                }
 
-                lstMessages.Add(" %%icommonTest%%%  " + icommonTest.CommonTestMethod());
+                if (icommonTest2 == null)
+                {
+                    lstMessages.Add("  #####*****icommonTest2************ null instance");
+                }
+                else
+                {
+                    lstMessages.Add(" %%icommonTest 2%%%  " + icommonTest2.CommonTestMethod());
+                }
+
+                
 
 
 
