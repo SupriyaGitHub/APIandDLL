@@ -173,7 +173,7 @@ namespace TestAPI.Controllers
                 foreach (Type type in resolver.Assembly.GetTypes())
                 {
                     lstMessages.Add("\n type :" + type.FullName);
-                    if (type != null && type.IsClass && typeof(ICommonTest).IsAssignableFrom(type))
+                    if (type != null && type.IsClass && type.FullName == "CommonLibrary.CommonTestClass")
                     {
                         icommonTest = Activator.CreateInstance(type, null) as ICommonTest;
                         lstMessages.Add("\ncreated instance");
