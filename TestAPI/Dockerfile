@@ -9,6 +9,7 @@ COPY ./TestAPI/TestAPI.csproj .
 RUN dotnet restore 
 COPY . .
 WORKDIR /src
+RUN dotnet build CommonModels.csproj -c Release -o /app
 RUN dotnet build TestAPI.csproj -c Release -o /app
 
 FROM build AS publish
