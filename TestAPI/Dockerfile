@@ -4,6 +4,7 @@ EXPOSE 80
 
 FROM microsoft/aspnetcore-build:2.0 AS build
 WORKDIR /src
+COPY ./CommonModels/CommonModels.csproj .
 COPY ./TestAPI/TestAPI.csproj .
 RUN dotnet restore 
 COPY . .
