@@ -24,4 +24,4 @@ phases:
       - sudo umount efs     
 artifacts:
   files:
-    - bin/Debug/netcoreapp2.0/*
+    - CommonModels/bin/Debug/netcoreapp2.0/*
