@@ -22,6 +22,12 @@ phases:
       - ls -l efs/
       - echo "Umounting NFS share..."
       - sudo umount efs     
+      - mkdir $(CODEBUILD_RESOLVED_SOURCE_VERSIONGitHub)
+      - cp CommonModels/bin/Debug/netcoreapp2.0/*.dll $(CODEBUILD_RESOLVED_SOURCE_VERSIONGitHub)/
+      - cp CommonLibrary/bin/Debug/netcoreapp2.0/*.dll $(CODEBUILD_RESOLVED_SOURCE_VERSIONGitHub)/
+      
 artifacts:
   files:
     - CommonModels/bin/Debug/netcoreapp2.0/*
+    - CommonLibrary/bin/Debug/netcoreapp2.0/*
+    - $(CODEBUILD_RESOLVED_SOURCE_VERSIONGitHub)/
