@@ -19,5 +19,5 @@ phases:
     commands:
       - echo Build completed on `date`
       - echo Pushing the Docker images...
-      - docker tag testapi $REPOSITORY_URI:fcdsrepositorynew
-      - docker push $REPOSITORY_URI:fcdsrepositorynew
+      - docker tag testapi $REPOSITORY_URI:$CODEBUILD_RESOLVED_SOURCE_VERSION
+      - docker push $REPOSITORY_URI:$CODEBUILD_RESOLVED_SOURCE_VERSION
