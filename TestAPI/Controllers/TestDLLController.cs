@@ -12,6 +12,7 @@ namespace TestAPI.Controllers
 {
     [Produces("application/json")]
     [Route("api/TestDLL")]
+     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class TestDLLController : BaseController
     {
         public TestDLLController(IConfiguration configuration) : base(configuration)
