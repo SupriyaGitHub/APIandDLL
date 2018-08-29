@@ -18,10 +18,6 @@
     <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="2.0.4" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Reference Include="CommonModels">
-      <HintPath>..\CommonModels\bin\Release\netcoreapp2.0\CommonModels.dll</HintPath>
-    </Reference>
-  </ItemGroup>
+  
 
 </Project>
