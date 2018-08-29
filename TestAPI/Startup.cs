@@ -33,6 +33,22 @@ namespace TestAPI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            
+             services.AddAuthentication()
+                    .AddJwtBearer(cfg =>
+                    {
+                        cfg.RequireHttpsMetadata = false;
+                        cfg.SaveToken = true;
+
+                        cfg.TokenValidationParameters = new TokenValidationParameters()
+                        {
+                            ValidIssuer = "fusioncds",
+                            ValidAudience = "fusioncds",
+                            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("fusioncdsprivatekey"))
+                        };
+
+                    });
+
             services.AddMvc();
          //   services.Configure<Config>(Configuration.GetSection("Config"));
 
@@ -45,7 +61,7 @@ namespace TestAPI
             {
                 app.UseDeveloperExceptionPage();
             }
-
+            app.UseAuthentication();
             app.UseMvc();
         }
     }
