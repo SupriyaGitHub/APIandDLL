@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace TestAPI.Controllers
 {
     [Route("api/[controller]")]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class ValuesController : Controller
     {
         // GET api/values
