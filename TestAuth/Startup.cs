@@ -10,7 +10,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using TestAPI.Utils;
 
-namespace TestAPI
+namespace TestAuth
 {
     public class Startup
     {
