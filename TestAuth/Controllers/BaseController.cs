@@ -14,7 +14,7 @@ using Microsoft.Extensions.DependencyModel.Resolution;
 using Microsoft.Extensions.Options;
 using TestAPI.Utils;
 
-namespace TestAPI.Controllers
+namespace TestAuth.Controllers
 {
     internal sealed class AssemblyResolver : IDisposable
     {
