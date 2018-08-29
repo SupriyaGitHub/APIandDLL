@@ -43,9 +43,9 @@ namespace TestAuth
 
                         cfg.TokenValidationParameters = new TokenValidationParameters()
                         {
-                            ValidIssuer = Configuration["Tokens:Issuer"],
-                            ValidAudience = Configuration["Tokens:Issuer"],
-                            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("fcdskey"))
+                            ValidIssuer = "fusioncds",
+                            ValidAudience = "fusioncds",
+                            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("fusioncdsprivatekey"))
                         };
 
                     });
