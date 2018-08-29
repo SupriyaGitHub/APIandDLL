@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 
-namespace TestAPI.Controllers
+namespace TestAuth.Controllers
 {
     [Route("api/Auth/[controller]")]
     public class ValuesController : Controller
