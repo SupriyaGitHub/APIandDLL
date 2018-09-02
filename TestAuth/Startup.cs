@@ -61,6 +61,7 @@ namespace TestAuth
             {
                 app.UseDeveloperExceptionPage();
             }
+            app.UseCors(builder => builder.WithOrigins("http://ebnlbprivatevpc.jqveehtphy.us-east-1.elasticbeanstalk.com/"));
             app.UseAuthentication();
             app.UseMvc();
         }
