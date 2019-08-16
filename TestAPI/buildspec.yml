@@ -5,8 +5,8 @@ phases:
     commands:
       - echo Logging in to Amazon ECR...
       - aws --version
-      - $(aws ecr get-login --no-include-email --region us-east-1)
-      - REPOSITORY_URI=177599039295.dkr.ecr.us-east-1.amazonaws.com/fcdsrepository
+      - $(aws ecr get-login --no-include-email --region us-west-1)
+      - REPOSITORY_URI=380702768975.dkr.ecr.us-west-1.amazonaws.com/fcdsapidlltest
   
   build:
     commands:
