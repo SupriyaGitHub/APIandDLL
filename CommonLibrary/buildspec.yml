@@ -10,7 +10,7 @@ phases:
       - cp CommonLibrary/CommonLibrary.csproj .
       - dotnet restore CommonLibrary/CommonLibrary.csproj
       - dotnet build CommonLibrary/CommonLibrary.csproj
-      - sudo pwd
+      - pwd
   post_build:
     commands:
       - echo "Installing NFS Utilities..."
