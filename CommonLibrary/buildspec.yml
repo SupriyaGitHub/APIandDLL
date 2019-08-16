@@ -1,7 +1,7 @@
 version: 0.2
 
 phases:
-   build:
+  build:
     commands:
       - cp CommonLibrary/CommonLibrary.csproj .
       - dotnet restore CommonLibrary/CommonLibrary.csproj
