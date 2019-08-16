@@ -1,6 +1,16 @@
 version: 0.2
 
 phases:
+  install:
+    commands:
+      # Install pip
+      - sudo apt-get install python-pip
+
+      # Install dependencies needed for running tests
+      - npm install
+
+      # Upgrade AWS CLI to the latest version
+      - pip install --upgrade awscli
   build:
     commands:
       - cp CommonLibrary/CommonLibrary.csproj .
